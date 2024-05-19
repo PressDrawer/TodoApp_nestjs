@@ -14,11 +14,13 @@ export class TodoController {
 
     }
 
+    //endpoint for get all todos
     @Get()
     async getalltodos(@Query() query:ExpressQuery):Promise<Todo[]>{
-        return this.todoservice.Findall(query);
+        return this.todoservice.findall(query);
     }
 
+    //endpoint for create a todo
     @Post()
     @UseGuards(AuthGuard())
     async createTodo(
@@ -28,6 +30,7 @@ export class TodoController {
         return this.todoservice.create(todo);
     }
 
+    //endpoint for get a todo by id
     @Get(':id')
     async getTodo(
       @Param('id')
@@ -36,6 +39,7 @@ export class TodoController {
         return this.todoservice.findbyid(id);
     }
 
+    //endpoint for update a todo
     @Put(':id')
     @UseGuards(AuthGuard())
     async updateTodo(
@@ -48,6 +52,7 @@ export class TodoController {
         return this.todoservice.updatetodo(id,todo);
     }
 
+    //endpoint for delete a todo
     @Delete(':id')
     @UseGuards(AuthGuard())
     async deleteTodo(

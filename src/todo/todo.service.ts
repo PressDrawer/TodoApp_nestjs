@@ -12,7 +12,8 @@ export class TodoService {
         private toodoModel: mongoose.Model<Todo>
     ){}
     
-    async Findall(query:Query):Promise<Todo[]>{
+    //get all todos
+    async findall(query:Query):Promise<Todo[]>{
 
         const resPerPage = 3;
         const currentPage = Number(query.page) || 1;
@@ -25,11 +26,13 @@ export class TodoService {
         return todos;
     }
 
+    //create todo
     async create(todo:Todo):Promise<Todo>{
      const res = await this.toodoModel.create(todo);
      return res;       
     }
 
+    //get a todo by id
     async findbyid(id:string):Promise<Todo>{
 
         const isValidId = mongoose.isValidObjectId(id);
@@ -46,20 +49,8 @@ export class TodoService {
         return todo;
     }
 
+    //update todo
     async updatetodo(id:string,todo:Todo):Promise<Todo>{
-
-        const isValidId = mongoose.isValidObjectId(id);
-        if(!isValidId)
-        {
-            throw new BadRequestException('Please enter correct id');
-        }
-
-        const _todo = await this.toodoModel.findById(id);
-        if(!_todo)
-        {
-            throw new NotFoundException('todo not found')
-        }
-    
 
         return await this.toodoModel.findByIdAndUpdate(id,todo,{
             new:true,
@@ -67,21 +58,10 @@ export class TodoService {
         });
     }
     
+    //delete todo
     async deleteByid(id:string):Promise<Todo>{
 
-        const isValidId = mongoose.isValidObjectId(id);
-        if(!isValidId)
-            {
-                throw new BadRequestException('Please enter correct id');
-            }
-
-         const todo = await this.toodoModel.findById(id);
-        if(!todo)
-        {
-            throw new NotFoundException('todo not found')
-        }
-
-       return await this.toodoModel.findByIdAndDelete(id);
+      return await this.toodoModel.findByIdAndDelete(id);
        
     }
 }
